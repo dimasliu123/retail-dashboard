@@ -1,0 +1,6 @@
+.DS_Store
+__pycache__
+*.py.swo
+*.py.swp
+.py.swp
+.py.swo
