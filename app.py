@@ -1,12 +1,13 @@
-from flask import Flask, redirect, render_template, url_for, request 
-from flask_sqlalchemy import SQLAlchemy
-from models import * 
+from flask import Flask, redirect, render_template, url_for, request
+import sqlalchemy as db
+from sqlalchemy import func as F
+from sqlalchemy.ext.declarative import declarative_base
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
-db = SQLAlchemy(app)
+engine = db.create_engine("sqlite:///data.db", echo=True)
+Base = declarative_base()
 
-class Retail(db.Model):
+class Retail(Base):
     __tablename__ = "RetailSales"
     InvoiceNo = db.Column(db.Integer, primary_key=True)
     StockCode = db.Column(db.Text)
@@ -18,6 +19,14 @@ class Retail(db.Model):
     Country = db.Column(db.Text)
     TotalPrice = db.Column(db.Float)
 
+def DailySales():
+    query = db.select([
+        F.strftime("%Y-%m-%d", Retail.InvoiceDate).label("Date"), F.sum(Retail.UnitPrice).label("Sales")
+    ]).group_by(F.strftime("%Y-%m-%d", Retail.InvoiceDate)).order_by(Retail.InvoiceDate)
+    res = engine.execute(query).fetchall()
+    date, sales = [i[0] for i in res], [i[1] for i in res]
+    return date, sales 
+
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -26,11 +35,12 @@ def home():
 def return_home():
     return redirect("index.html")
 
-@app.route("/sales", methods=["GET", "POST"])
+@app.route("/sales/")
 def sales():
-    return render_template("sales.html")
+    date, sales = DailySales()
+    return render_template("sales.html", date=date, sales=sales)
 
-@app.route("/customer", methods=["GET", "POST"])
+@app.route("/customer/", methods=["GET", "POST"])
 def customer():
     return render_template("cust.html")
 
