@@ -5,19 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <title>Document</title>
+    <title>Sales</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-    <canvas id="sales-data" height="300" width="500"></canvas>
-    <p id="Date"></p>
-    <p id="Sales"></p>
+    <button type="button" class="btn btn-info" id="change-scale">Change Scale</button>
+    <p id="date"></p>
+    <p id="sales"></p>
+    <canvas id="DailySales" style="height=250; width=400"></canvas>
+    <script type="module">
+        const dailyChart = document.querySelector("#DailySales");
+        const btn = document.querySelector("#change-scale");
+
+        const total = {{ total | safe }};
+        const member = {{ member | safe }};
+        const non_member = {{ non_member| safe }};
+
+        import { getData, getConfig } from "{{ url_for('static', filename='js/script.js') }}"
+
+        const data = getData(total, member, non_member);
+        const config = getConfig(data);
+        const SalesChart = new Chart(
+            dailyChart,
+            config
+        );
+    </script>
 </body>
-<script>
-    let salesDate = "{{date}}";
-    let sales = "{{sales}}";
-    document.getElementById("Date").innerHTML = salesDate;
-    document.getElementById("Sales").innerHTML = sales;
-    console.log(salesDate);
-    console.log(sales);
-</script>
 </html>
