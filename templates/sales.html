@@ -9,26 +9,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-    <button type="button" class="btn btn-info" id="change-scale">Change Scale</button>
+    <a href = "{{ url_for('home') }}" class="btn btn-info">Return to home page</a>
     <p id="date"></p>
     <p id="sales"></p>
     <canvas id="DailySales" style="height=250; width=400"></canvas>
     <script type="module">
-        const dailyChart = document.querySelector("#DailySales");
-        const btn = document.querySelector("#change-scale");
+        import { getSalesData, getSalesConfig } from "{{ url_for('static', filename='js/script.js') }}"
+
+        const dailyChart = document.querySelector("#DailySales").getContext("2d");
+        const scaleBtn = document.querySelector("#scaleBtn");
 
         const total = {{ total | safe }};
         const member = {{ member | safe }};
         const non_member = {{ non_member| safe }};
 
-        import { getData, getConfig } from "{{ url_for('static', filename='js/script.js') }}"
-
-        const data = getData(total, member, non_member);
-        const config = getConfig(data);
+        const data = getSalesData(total, member, non_member);
+        const config = getSalesConfig(data);
         const SalesChart = new Chart(
             dailyChart,
             config
         );
+        SalesChart.canvas.parentNode.style.width = "1380px";
+        SalesChart.canvas.parentNode.style.height = "720px";
     </script>
 </body>
 </html>

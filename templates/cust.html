@@ -4,27 +4,82 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Customer</title>
 </head>
 <body>
-    <canvas id="RFM" height="250" width="400"></canvas>
-<script>
-    const checkData = (x) => {
-        if (x == null) {
-            console.log("No data is found");
-        }
-        else {
-            console.log("Data is found");
-        }
-    }
-    const c_id = {{ rfm_val.CustomerID }};
-    const r = {{ rfm_val.R }};
-    const f = {{ rfm_val.F }};
-    const m = {{ rfm_val.M }};
-    checkData(c_id);
-    checkData(r);
-    checkData(f);
+    <div class="container">
+    <a href= "{{ url_for('home') }}" class="btn btn-info">Return to home page</a>
+        <div class="row">
+            <div class="col-m-3">
+                <table class="table">
+                    <thead>
+                        <tr class="info">
+                            <th>Quantile</th>
+                            <th>Recency</th>
+                            <th>Frequency</th>
+                            <th>Monetary</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="active">
+                            <td>25 %</td>
+                            <td>{{ R_Quant[0] }}</td>
+                            <td>{{ F_Quant[0] }}</td>
+                            <td>{{ M_Quant[0] }}</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>50 %</td>
+                            <td>{{ R_Quant[1] }}</td>
+                            <td>{{ F_Quant[1] }}</td>
+                            <td>{{ M_Quant[1] }}</td>
+                        </tr>
+                        <tr class="success">
+                            <td>75 %</td>
+                            <td>{{ R_Quant[2] }}</td>
+                            <td>{{ F_Quant[2] }}</td>
+                            <td>{{ M_Quant[2] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <div class="card-body col-m-3">
+                    <canvas id="RFMScore"></canvas>
+                </div>
+                <div class="card-body col-m-3">
+                    <canvas id="RFMClass"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="module">
+    const RFMClass = document.querySelector("#RFMClass").getContext("2d");
+    const RFMScore = document.querySelector("#RFMScore").getContext("2d");
+
+    import { getRFMScore, RFMScoreConfig, rfmClassData, rfmClassConfig } from  "{{ url_for('static', filename='js/script.js') }}"
+
+    const rfm_score = {{ score_key | safe }};
+    const rfmScoreVal = {{ score_val | safe }};
+    let rfm_class = {{ class_key | safe }};
+    rfm_class = rfm_class.map(Number);
+    const rfmClassVal = {{ class_val | safe }};
+
+    const data = getRFMScore(rfm_score, rfmScoreVal);
+    const config = RFMScoreConfig(data);
+
+    const rfm_class_data = rfmClassData(rfm_class, rfmClassVal);
+    const rfm_class_config = rfmClassConfig(rfm_class_data);
+
+    const rfmScoreChart = new Chart(RFMScore, config);
+    const rfmClassChart = new Chart(RFMClass, rfm_class_config);
+
+    RFMScore.canvas.parentNode.style.height = "520px";
+    RFMScore.canvas.parentNode.style.width = "920px";
+
+    rfmClassChart.canvas.parentNode.style.height = "520px";
+    rfmClassChart.canvas.parentNode.style.width = "920px";
 </script>
 </body>
 </html>

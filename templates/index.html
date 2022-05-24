@@ -18,11 +18,11 @@
         <li class="active"><a>Dashboard</a></li>
         <li><a href="{{ url_for('sales') }}">Sales</a></li>
         <li><a href="{{ url_for('customer') }}">Customer</a></li>
+        <li><a href="{{ url_for('country') }}">Country</a></li>
       </ul>
     </div>
     </div>
     </nav>
-
     <div class="container-fluid">
     <div class="row content">
     <div class="col-sm-3 sidenav hidden-xs">
@@ -31,10 +31,10 @@
         <li class="active"><a>Dashboard</a></li>
         <li><a href="{{ url_for('sales') }}">Sales</a></li>
         <li><a href="{{ url_for('customer') }}">Customer</a></li>
+        <li><a href="{{ url_for('country') }}">Country</a></li>
       </ul><br>
     </div>
     <br>
-
     <div class="col-sm-9">
       <div class="well well-lg">
         <h4>Dashboard</h4>
@@ -43,8 +43,8 @@
       <div class="row">
         <div class="col-sm-3">
           <div class="well well-lg">
-            <h4>2020 Total Sales</h4>
-            <p>1 Million</p>
+            <h4>Total Sales</h4>
+            <p>$ {{ sales }}</p>
           </div>
         </div>
         <div class="col-sm-3">

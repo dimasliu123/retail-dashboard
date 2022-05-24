@@ -1,3 +1,4 @@
+from collections import Counter, OrderedDict
 import statistics
 import numpy as np
 from datetime import date, datetime, timedelta
@@ -10,6 +11,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 app = Flask(__name__)
 end_date = datetime(2011, 12, 10)
+#end_date = datetime.now()
 engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
 
@@ -49,19 +51,27 @@ def DailySales():
     total = engine.execute(query).fetchall()
     member = engine.execute(query_member).fetchall()
     non_member = engine.execute(query_non_member).fetchall() 
+
     TOTAL = timeSeriesData(total)
     MEMBER = timeSeriesData(member)
     NON_MEMBER = timeSeriesData(non_member)
 
-#    TOTAL = {"Dates" :[str(datetime.strptime(i.Date, "%Y-%m-%d")) for i in total],
-#             "Sales" : [i.Sales for i in total]}
-#
-#    MEMBER = {"Dates" : [str(datetime.strptime(i.Date, "%Y-%m-%d")) for i in member],
-#              "Sales" : [i.Sales for i in member]}
-#
-#    NON_MEMBER = {"Dates" : [str(datetime.strptime(i.Date, "%Y-%m-%d")) for i in non_member],
-#                  "Sales" : [i.Sales for i in non_member]}
     return TOTAL, MEMBER, NON_MEMBER
+
+def CountrySales():
+    query = db.select([
+        F.strftime("%Y-%m", Retail.InvoiceDate).label("Date"), Retail.Country.label("Country"), F.sum(Retail.TotalPrice).label("Sales")
+    ]).group_by(F.strftime("%Y-%m", Retail.InvoiceDate)).order_by("Date")
+
+    country = query.group_by("Country")
+    country_sales = engine.execute(country).fetchall()
+    countrySales = {"Dates" : [i.Date for i in country_sales],
+                    "Country" : [i.Country for i in country_sales],
+                    "Sales" : [i.Sales for i in country_sales]}
+    return countrySales
+
+# min -> 2010-12 
+# max -> 2011-12
 
 def segR(R, R_Quant):
     RSeg = []
@@ -103,32 +113,65 @@ def calcRFM(sq_func = F):
     R = [int((end_date - datetime.strptime(i.Recency, "%Y-%m-%d")).days) for i in res]
     F = [int(i.Frequency) for i in res]
     M = [i.Monetary for i in res]
+
     R_Quant = statistics.quantiles(R, n=4)
+    R_Quant = [int(i) for i in R_Quant]
     F_Quant = statistics.quantiles(F, n=4)
+    F_Quant = [int(i) for i in F_Quant]
     M_Quant = statistics.quantiles(M, n=4)
+    M_Quant = [round(i, 2) for i in M_Quant]
 
     RSeg = segR(R, R_Quant)
     FSeg = segFM(F, F_Quant)
     MSeg = segFM(M, M_Quant)
 
-    ValRFM = {"CustomerID" : C_ID, "R" : RSeg, "F" : FSeg, "M" : MSeg}
-    return ValRFM
+    RFMScore = list(map(lambda x, y, z : int(x) + int(y) + int(z), RSeg, FSeg, MSeg))
+    RFMClass = list(map(lambda x, y, z : str(x) + str(y) + str(z), RSeg, FSeg, MSeg))
 
-print(calcRFM())
+    scoreCount = Counter(RFMScore)
+    classCount = Counter(RFMClass)
+    scoreCount = dict(OrderedDict(sorted(scoreCount.items())))
+    classCount = dict(OrderedDict(sorted(classCount.items())))
+
+    score_key, score_val = list(scoreCount.keys()), list(scoreCount.values())
+    class_key, class_val = list(classCount.keys()), list(classCount.values())
+    return score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant 
+
+def totalSales():
+    quer = db.select([
+        F.sum(Retail.TotalPrice).label("Sales")
+    ])
+    sales = engine.execute(quer).fetchall()
+    return list(sales)[0][0]
+
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    sales = totalSales()
+    return render_template("index.html", sales=round(sales, 2))
 
 @app.route("/sales/")
 def sales():
     total, member, non_member = DailySales()
     return render_template("sales.html", total=total, member=member, non_member=non_member) 
 
+@app.route("/country/")
+def country():
+    country_sales = CountrySales()
+    return render_template("country.html", country_sales = country_sales)
+
 @app.route("/customer/", methods=["GET", "POST"])
 def customer():
-    rfm_val = calcRFM()
-    return render_template("cust.html", rfm_val = rfm_val)
+    score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant = calcRFM()
+    return render_template("cust.html",  
+                            score_key = score_key, 
+                            score_val = score_val,
+                            class_key = class_key,
+                            class_val = class_val,
+                            R_Quant = R_Quant,
+                            F_Quant = F_Quant,
+                            M_Quant = M_Quant
+                            )
 
 if __name__ == "__main__":
-   app.run(debug=True, port="8080")
+    app.run(debug=True, port="8080")
