@@ -17,6 +17,7 @@ end_date = datetime(2011, 12, 10)
 engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
 
+# For product analysis
 """
 SELECT InvoiceDate, InvoiceNo, CustomerID, 
 GROUP_CONCAT(Description, ", ") AS "ProductBought", 
