@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Customer</title>
 </head>
 <body>
     <div class="container">
-    <a href= "{{ url_for('home') }}" class="btn btn-info">Return to home page</a>
+    <a href= "{{ url_for('home') }}" class="btn btn-outline-info">Return to home page</a>
         <div class="row">
             <div class="col-m-3">
-                <table class="table">
+                <table class="table table-dark table-hover">
                     <thead>
-                        <tr class="info">
+                        <tr class="text-white text-bold">
                             <th>Quantile</th>
                             <th>Recency</th>
                             <th>Frequency</th>
@@ -23,19 +24,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="active">
+                        <tr class="text-white">
                             <td>25 %</td>
                             <td>{{ R_Quant[0] }}</td>
                             <td>{{ F_Quant[0] }}</td>
                             <td>{{ M_Quant[0] }}</td>
                         </tr>
-                        <tr class="danger">
+                        <tr class="text-white">
                             <td>50 %</td>
                             <td>{{ R_Quant[1] }}</td>
                             <td>{{ F_Quant[1] }}</td>
                             <td>{{ M_Quant[1] }}</td>
                         </tr>
-                        <tr class="success">
+                        <tr class="text-white">
                             <td>75 %</td>
                             <td>{{ R_Quant[2] }}</td>
                             <td>{{ F_Quant[2] }}</td>
@@ -44,11 +45,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card">
-                <div class="card-body col-m-3">
+            <div class="card-columns">
+                <div class="card-bg-primary col-m-3">
                     <canvas id="RFMScore"></canvas>
                 </div>
-                <div class="card-body col-m-3">
+                <div class="card-bg-success col-m-3">
                     <canvas id="RFMClass"></canvas>
                 </div>
             </div>
@@ -60,10 +61,16 @@
 
     import { getRFMScore, RFMScoreConfig, rfmClassData, rfmClassConfig } from  "{{ url_for('static', filename='js/script.js') }}"
 
+    const classSegment = {{ class_segment | safe }};
+    const R = {{ RSeg | safe }};
+    let F = {{ FSeg | safe }};
+
     const rfm_score = {{ score_key | safe }};
     const rfmScoreVal = {{ score_val | safe }};
+
     let rfm_class = {{ class_key | safe }};
     rfm_class = rfm_class.map(Number);
+
     const rfmClassVal = {{ class_val | safe }};
 
     const data = getRFMScore(rfm_score, rfmScoreVal);

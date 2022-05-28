@@ -12,7 +12,7 @@ export const getSalesData = (total, member, non_member) => {
             {
                 label : "Member Sales",
                 data : member,
-                fill : false,
+                fill : true,
                 borderColor : "#DC143C",
                 backgroundColor : "transparent",
                 tension : 0.15,
@@ -20,7 +20,7 @@ export const getSalesData = (total, member, non_member) => {
             {
                 label : "Non Member Sales",
                 data : non_member,
-                fill : false,
+                fill : true,
                 borderColor : "#50C878",
                 backgroundColor : "transparent",
                 tension : 0.15,
@@ -44,20 +44,36 @@ export const getSalesConfig = (data) => {
                 title : {
                     display : true,
                     text : "Daily Sales",
+                    color : "#F5F5F5",
                     font : {weight : "bold", size : 24, family : "optima"}
+                },
+                legend : {
+                    labels : {
+                        color : "#F5F5F5",
+                    }
                 }
             },
             scales : {
-                x : [{
-                    type : "time",
-                    distributed : "series",
-                }]
-            }
+                x : {
+                    ticks : {
+                        color : "#F5F5F5",
+                    },
+                    grid : {
+                    },
+                },
+                y: {
+                    type : "linear",
+                    ticks : {
+                        color : "#F5F5F5",
+                    },
+                    grid : {
+                    },
+                },
+            },
         }
     }
     return config;
 }
-
 
 export const getRFMScore = (Label, Value) => {
     const data = {
@@ -65,27 +81,13 @@ export const getRFMScore = (Label, Value) => {
         datasets : [{
             data : Value,
             backgroundColor : [
-                "#FF638433",
-                "#FF9F4033",
-                "#FFCD5633",
-                "#4BC0C033",
-                "#36A2EB33",
-                "#9966FF33",
-                "#C9CBCF33",
-                "#FFE6FF33",
-                "#CCFFE633",
-            ],
+                "#FF638433", "#FF9F4033", "#FFCD5633",
+                "#4BC0C033", "#36A2EB33", "#9966FF33",
+                "#C9CBCF33", "#FFE6FF33", "#CCFFE633",],
             borderColor : [
-                "#FF6384",
-                "#FF9F40",
-                "#FFCD56",
-                "#4BC0C0",
-                "#36A2EB",
-                "#9966FF",
-                "#C9CBCF",
-                "#FF99FF",
-                "#4DFFA6",
-            ],
+                "#FF6384", "#FF9F40", "#FFCD56",
+                "#4BC0C0", "#36A2EB", "#9966FF",
+                "#C9CBCF", "#FF99FF", "#4DFFA6",],
             borderWidth : 1,
         }]
     }
@@ -102,15 +104,24 @@ export const RFMScoreConfig = (Data) => {
                 title : {
                     display : true,
                     text : "RFM Score",
+                    color : "#F5F5F5",
                     font : {weight : "bold", size : 20, family : "optima"},
                 },
                 legend : {
                     display : false,
                 },
             },
-            scale : {
+            scales : {
+                x : {
+                    ticks : {
+                         color : "#F5F5F5",
+                    },
+                },
                 y : {
-                    beginAtZero :false 
+                    beginAtZero : true,
+                    ticks : {
+                        color : "#F5F5F5",
+                    },
                 },
             },
         }
@@ -123,11 +134,21 @@ const randomColorGenerator = (numColor) => {
     const arrBorderColor = [];
     for (let i = 0; i < numColor; i++) {
         let randColor =  '#' + (Math.random().toString(16) + '0000000').slice(2, 8)
-        arrColor.push(randColor + "33")
+        arrColor.push(randColor + "66")
         arrBorderColor.push(randColor)
     }
     return {bgColor : arrColor, borderColor : arrBorderColor} 
 };
+
+export const randColorGenerator = (numColor) => { 
+    const arrColor = [];
+    for (let i = 0; i < numColor; i++) {
+        let randColor =  '#' + (Math.random().toString(16) + '0000000').slice(2, 8)
+        arrColor.push(randColor)
+    }
+    return arrColor 
+};
+
 
 export const rfmClassData = (labels, total) => {
     const color = randomColorGenerator(6)
@@ -152,21 +173,32 @@ export const rfmClassConfig = (data) => {
                 title : {
                     display : true,
                     text : "RFM Class",
+                    color : "#F5F5F5",
                     font : {weight : "bold", size : 20, family : "optima"},
                 },
                 legend : {
                     display : false,
-                },
-                scale : {
-                    y : {
-                        beginAtZero : false,
+                }, 
+            }, scales : {
+                xAxes : {
+                    display : true,
+                    ticks : { color : "#F5F5F5" },
+                    barThickness : 10,
+                    maxBarThickness :10,
+                    scaleLabel : {
+                        display : true,
+                        fontColor : "#F5F5F5",
                     },
-                    xAxes : [{
-                        barThickness : 6,
-                        maxBarThickness : 6,
-                    }],
                 },
-            }
+                yAxes : {
+                    display : true,
+                    ticks : { color : "#F5F5F5" },
+                    scaleLabel : {
+                        display : true,
+                        fontColor : "#F5F5F5",
+                    }
+                },
+            },
         }
     }
     return config;
@@ -207,23 +239,35 @@ export const countryConfig = (data) => {
                 title : {
                     display : true,
                     text : "Monthly Sales (Country)",
+                    color : "#F5F5F5",
                     font : {weight : "bold", size : 20, family : "optima"},
                 },
                 legend : {
                     display : false,
+                    color : "#F5F5F5",
                 },
-                scale : {
-                    y : {
-                        beginAtZero : false,
+            },
+            scales : {
+                y : {
+                    beginAtZero : false,
+                    ticks : {
+                        color : "#F5F5F5",
                     },
-                    xAxes : [{
-                        barThickness : 6,
-                        maxBarThickness : 6,
-                    }],
                 },
-            }
+                x : {
+                    ticks : {
+                        color : "#F5F5F5",
+                    },
+                },
+            },
         }
     }
     return config;
 }
+
+export const getTotal = (arr) => {
+    let total = 0;
+    for (let i in arr) { total += arr[i] }
+    return total;
+} 
 

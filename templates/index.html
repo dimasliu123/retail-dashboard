@@ -6,63 +6,70 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <style>
     </style>
     </head>
-<body>
-    <nav class="navbar navbar-inverse visible-xs">
-    <div class="container-fluid">
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li class="active"><a>Dashboard</a></li>
-        <li><a href="{{ url_for('sales') }}">Sales</a></li>
-        <li><a href="{{ url_for('customer') }}">Customer</a></li>
-        <li><a href="{{ url_for('country') }}">Country</a></li>
-      </ul>
-    </div>
-    </div>
-    </nav>
+<body style="background : #333333">
     <div class="container-fluid">
     <div class="row content">
-    <div class="col-sm-3 sidenav hidden-xs">
-      <h2>Dashboard</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a>Dashboard</a></li>
-        <li><a href="{{ url_for('sales') }}">Sales</a></li>
-        <li><a href="{{ url_for('customer') }}">Customer</a></li>
-        <li><a href="{{ url_for('country') }}">Country</a></li>
+    <div class="col-sm-3 sidenav hidden-m">
+      <ul class="nav-item">
+        <h2 class="d-block text-white" style="font-family : optima">Dashboard</h2>
+        <br>
+        <li class="d-block btn btn-info btn-m"><a class="nav-link text-white" style="font-family : optima">Dashboard</a></li>
+        <br>
+        <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('sales') }}">Sales</a></li>
+        <br>
+        <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('customer') }}">Customer</a></li>
+        <br>
+        <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('country') }}">Country</a></li>
+        <br>
       </ul><br>
     </div>
     <br>
     <div class="col-sm-9">
-      <div class="well well-lg">
-        <h4>Dashboard</h4>
-        <p>Some text..</p>
+      <div class="border border-info text-white">
+        <div class="card-body">
+            <h4>Dashboard</h4>
+            <p>This is some text.</p>
+        </div>
       </div>
       <div class="row">
         <div class="col-sm-3">
-          <div class="well well-lg">
-            <h4>Total Sales</h4>
-            <p>$ {{ sales }}</p>
+            <br>
+          <div class="border border-info text-white">
+            <div class="card-body">
+                <h4>Total Sales</h4>
+                <p>$ {{ sales }}</p>
+            </div>
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="well well-lg">
-            <h4>Pages</h4>
-            <p>100 Million</p>
+                <br>
+            <div class="border border-info text-white">
+              <div class="card-body">
+                <h4>Pages</h4>
+                <p>100 Million</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <br>
+          <div class="border border-info text-white">
+            <div class="card-body">
+                <h4>Sessions</h4>
+                <p>10 Million</p>
+            </div>
           </div>
         </div>
         <div class="col-sm-3">
-          <div class="well well-lg">
-            <h4>Sessions</h4>
-            <p>10 Million</p>
-          </div>
-        </div>
-        <div class="col-sm-3">
-          <div class="well well-lg">
-            <h4>Bounce</h4>
-            <p>30%</p>
+            <br>
+          <div class="border border-info text-white">
+            <div class="card-body">
+                <h4>Bounce</h4>
+                <p>30%</p>
+            </div>
           </div>
         </div>
       </div>

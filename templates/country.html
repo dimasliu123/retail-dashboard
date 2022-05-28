@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <title>Country Sales</title>
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+<!--
     <style>
         tr {
             display : block;
@@ -21,61 +22,76 @@
         }
 
     </style>
+//-->
 </head>
 <body>
-    <a class="btn btn-info" href="{{ url_for('home') }}">Return to home page</a>
     <div class="container">
-        <label for="select-date">Choose date (Year-Month) </label>
-        <select id="data-data" name="Date">
-            <option value="2010-12">2010-12</option>
-            <option value="2011-01">2011-01</option>
-            <option value="2011-02">2011-02</option>
-            <option value="2011-03">2011-03</option>
-            <option value="2011-04">2011-04</option>
-            <option value="2011-05">2011-05</option>
-            <option value="2011-06">2011-06</option>
-            <option value="2011-07">2011-07</option>
-            <option value="2011-08">2011-08</option>
-            <option value="2011-09">2011-09</option>
-            <option value="2011-10">2011-10</option>
-            <option value="2011-11">2011-11</option>
-            <option value="2011-12">2011-12</option>
-        </select>
-        <!--
-        <div>
-            <table id="tab-data" class="table table-bordered">
-                {% for key, value in country_sales.items() %}
-                    <tr>
-                        <th class="info">{{ key }}</th>
-                        {% for i in value %}
-                            <td>{{ i }}</td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </table>
-        </div>
-        //-->
-    </div>
-    <canvas id="country-monthly"></canvas>
-    <script type="module">
-        import { findArr, countryData, countryConfig } from "{{ url_for('static', filename='js/script.js') }}"
+            <label for="select-date">Choose date (Year-Month) </label>
+                <select class="btn btn-outline-info btn-m" id="data-data" name="Date" style="font-family:optima">
+                    <option value="2010-12">2010-12</option>
+                    <option value="2011-01">2011-01</option>
+                    <option value="2011-02">2011-02</option>
+                    <option value="2011-03">2011-03</option>
+                    <option value="2011-04">2011-04</option>
+                    <option value="2011-05">2011-05</option>
+                    <option value="2011-06">2011-06</option>
+                    <option value="2011-07">2011-07</option>
+                    <option value="2011-08">2011-08</option>
+                    <option value="2011-09">2011-09</option>
+                    <option value="2011-10">2011-10</option>
+                    <option value="2011-11">2011-11</option>
+                    <option value="2011-12">2011-12</option>
+                </select>
+                <h3 style="color:whitesmoke; font-family:optima;">Total Sales (Monthly) :</h3>
+                <h3 id="TotalSales" style="color:whitesmoke; font-family:optima;"></h3>
 
-        const monthChart = document.querySelector("#country-monthly").getContext("2d");
+        <a href = "{{ url_for('home') }}" class="btn btn-outline-info" style="font-family:optima">Return to home page</a>
+            </div>
+            <!--
+            <div>
+                <table id="tab-data" class="table table-bordered">
+                    {% for key, value in country_sales.items() %}
+                        <tr>
+                            <th class="info">{{ key }}</th>
+                            {% for i in value %}
+                                <td>{{ i }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            //-->
+    <canvas id="country-monthly"></canvas>
+    </div>
+    <script type="module">
+        import { findArr, countryData, countryConfig, randColorGenerator, getTotal } from "{{ url_for('static', filename='js/script.js') }}"
+        let monthChart = document.querySelector("#country-monthly").getContext("2d");
         const dates = {{ country_sales.Dates | safe }};
         const country = {{ country_sales.Country | safe }};
         const sales = {{ country_sales.Sales | safe }};
-        const opt = document.querySelector("#data-data");
-        opt.addEventListener("change", function() {
-            const selectedData = findArr(dates, country, sales, this.value);
-            const country_data = countryData(selectedData.Country, selectedData.Sales)
-            const chartConfig = countryConfig(country_data);
-            let chart = new Chart(monthChart, chartConfig);
-            chart.destroy();
-            chart = new Chart(monthChart, chartConfig);
-            chart.canvas.parentNode.style.height = "520px";
-            chart.canvas.parentNode.style.width = "1080px";
-        });
 
+        const opt = document.querySelector("#data-data")
+        let selectedData = findArr(dates, country, sales, "2010-12")
+        const country_data = countryData(selectedData.Country, selectedData.Sales)
+        let totalSales = Math.round(getTotal(selectedData.Sales));
+        const chartConfig = countryConfig(country_data);
+
+        let TotalSales = document.querySelector("#TotalSales");
+        TotalSales.innerHTML = totalSales;
+
+        let country_chart = new Chart(monthChart, chartConfig);
+        country_chart.canvas.parentNode.style.width = "1020px";
+        country_chart.canvas.parentNode.style.height = "720px";
+        opt.onchange = () => {
+            const randColor = randColorGenerator(6)
+            selectedData = findArr(dates, country, sales, opt.value) 
+            country_chart.data.labels = selectedData.Country
+            country_chart.data.datasets.data = selectedData.Sales
+            country_chart.data.datasets.backgroundColor = randColor
+            country_chart.update()
+            totalSales = Math.round(getTotal(selectedData.Sales))
+            TotalSales.innerHTML = totalSales;
+        }
     </script>
 </body>
 </html>

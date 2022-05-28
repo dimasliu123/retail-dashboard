@@ -1,7 +1,6 @@
 .DS_Store
 *.csv
 __pycache__
-*.py.swo
-*.py.swp
-.py.swp
-.py.swo
+.swo
+.swp
+.swp.swo

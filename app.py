@@ -10,10 +10,20 @@ from sqlalchemy.sql import column
 from sqlalchemy.ext.declarative import declarative_base
 
 app = Flask(__name__)
+
 end_date = datetime(2011, 12, 10)
 #end_date = datetime.now()
+
 engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
+
+"""
+SELECT InvoiceDate, InvoiceNo, CustomerID, 
+GROUP_CONCAT(Description, ", ") AS "ProductBought", 
+SUM(TotalPrice) AS Totals 
+FROM RetailSales GROUP BY InvoiceNo 
+ORDER BY InvoiceDate;
+"""
 
 class Retail(Base):
     __tablename__ = "RetailSales"
@@ -101,6 +111,29 @@ def segFM(FM, FM_Quant):
             FMSeg.append(1)
     return FMSeg
 
+def segmentRFMClass(R, F):
+    segment = []
+    for i in range(len(R)):
+        if R[i] == 1 and F[i] == 1:
+            segment.append("Hibernating")
+        elif (R[i] == 1 and F[i] == 2) or (R[i] == 2 and F[i] == 2) or (R[i] == 2 and F[i] == 1):
+            segment.append("At Risk")
+        elif R[i] == 1 and F[i] == 4 :
+            segment.append("Can't Lose")
+        elif R[i] == 2 and F[i] == 2 :
+            segment.append("Needs Attention")
+        elif (R[i] == 2 and F[i] == 3) or (R[i] == 2 and F[i] == 4):
+            segment.append("Potential Loyalist")
+        elif (R[i] == 4 and F[i] == 2) or (R[i] == 4 and F[i] == 1):
+            segment.append("Promising")
+        elif R[i] == 3 and F[i] == 3:
+            segment.append("Loyal")
+        elif R[i] == 4 and F[i] == 4:
+            segment.append("Champion")
+        else :
+            segment.append("Nothing")
+    return segment
+
 def calcRFM(sq_func = F): 
     query = db.select([
         Retail.CustomerID, sq_func.max(sq_func.strftime("%Y-%m-%d", Retail.InvoiceDate)).label("Recency"), sq_func.count(Retail.CustomerID).label("Frequency"), sq_func.sum(Retail.TotalPrice).label("Monetary")
@@ -127,15 +160,18 @@ def calcRFM(sq_func = F):
 
     RFMScore = list(map(lambda x, y, z : int(x) + int(y) + int(z), RSeg, FSeg, MSeg))
     RFMClass = list(map(lambda x, y, z : str(x) + str(y) + str(z), RSeg, FSeg, MSeg))
+    RFMClassSegment = segmentRFMClass(RSeg, FSeg)
 
     scoreCount = Counter(RFMScore)
     classCount = Counter(RFMClass)
+
     scoreCount = dict(OrderedDict(sorted(scoreCount.items())))
     classCount = dict(OrderedDict(sorted(classCount.items())))
 
     score_key, score_val = list(scoreCount.keys()), list(scoreCount.values())
     class_key, class_val = list(classCount.keys()), list(classCount.values())
-    return score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant 
+
+    return score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant, RFMClassSegment,RSeg, FSeg 
 
 def totalSales():
     quer = db.select([
@@ -143,7 +179,6 @@ def totalSales():
     ])
     sales = engine.execute(quer).fetchall()
     return list(sales)[0][0]
-
 
 @app.route("/")
 def home():
@@ -158,11 +193,11 @@ def sales():
 @app.route("/country/")
 def country():
     country_sales = CountrySales()
-    return render_template("country.html", country_sales = country_sales)
+    return render_template("country.html", country_sales=country_sales)
 
-@app.route("/customer/", methods=["GET", "POST"])
+@app.route("/customer/")
 def customer():
-    score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant = calcRFM()
+    score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant, class_segment, RSeg, FSeg = calcRFM()
     return render_template("cust.html",  
                             score_key = score_key, 
                             score_val = score_val,
@@ -170,7 +205,10 @@ def customer():
                             class_val = class_val,
                             R_Quant = R_Quant,
                             F_Quant = F_Quant,
-                            M_Quant = M_Quant
+                            M_Quant = M_Quant,
+                            class_segment = class_segment,
+                            RSeg = RSeg,
+                            FSeg = FSeg
                             )
 
 if __name__ == "__main__":
