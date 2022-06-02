@@ -1,9 +1,3 @@
 body {
-    background-color : #333333;
-    font-family : optima;
-}
-
-#title-index {
-    color : whitesmoke;
-    font-family : optima;
+    background : #333333!important;
 }

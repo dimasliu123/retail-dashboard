@@ -137,7 +137,7 @@ const randomColorGenerator = (numColor) => {
         arrColor.push(randColor + "66")
         arrBorderColor.push(randColor)
     }
-    return {bgColor : arrColor, borderColor : arrBorderColor} 
+    return { bgColor : arrColor, borderColor : arrBorderColor } 
 };
 
 export const randColorGenerator = (numColor) => { 
@@ -204,22 +204,9 @@ export const rfmClassConfig = (data) => {
     return config;
 }
 
-export const findArr = (date_arr, country_arr, sales_arr, cond) => {
-    const foundCountry = [];
-    const foundSales = [];
-    for (let i=0; i < date_arr.length; i++) {
-        if (date_arr[i] == cond) {
-            foundCountry.push(country_arr[i]);
-            foundSales.push(sales_arr[i]);
-        }
-    }
-    return {Country : foundCountry, Sales : foundSales };
-}
-
-export const countryData = (labels, total) => {
+export const countryData = (total) => {
     const color = randomColorGenerator(6)
     const data = { 
-        labels : labels,
         datasets: [{
             data: total,
             backgroundColor : color.bgColor,
@@ -267,7 +254,9 @@ export const countryConfig = (data) => {
 
 export const getTotal = (arr) => {
     let total = 0;
-    for (let i in arr) { total += arr[i] }
+    for (let i = 0; i < arr.length; i++) {
+        total += Object.values(arr[i])[1];
+    }
     return total;
 } 
 

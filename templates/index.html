@@ -7,57 +7,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <style>
-    </style>
-    </head>
-<body style="background : #333333">
-    <div class="container-fluid">
-    <div class="row content">
-    <div class="col-sm-3 sidenav hidden-m">
-      <ul class="nav-item">
-        <h2 class="d-block text-white" style="font-family : optima">Dashboard</h2>
-        <br>
-        <li class="d-block btn btn-info btn-m"><a class="nav-link text-white" style="font-family : optima">Dashboard</a></li>
-        <br>
-        <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('sales') }}">Sales</a></li>
-        <br>
-        <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('customer') }}">Customer</a></li>
-        <br>
-        <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('country') }}">Country</a></li>
-        <br>
-      </ul><br>
-    </div>
-    <br>
-    <div class="col-sm-9">
-      <div class="border border-info text-white">
-        <div class="card-body">
-            <h4>Dashboard</h4>
-            <p>This is some text.</p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-3">
-            <br>
-          <div class="border border-info text-white">
-            <div class="card-body">
-                <h4>Total Sales</h4>
-                <p>$ {{ sales }}</p>
+</head>
+<body>
+    <div class="container">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 hidden-m">
+                <nav class="nav-item">
+                    <br><h2 class="d-block text-white" style="font-family : optima">Retail Dashboard</h2><br>
+                    <li class="d-block btn btn-info btn-m" disabled><a class="nav-link text-white" style="font-family : optima">Dashboard</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('sales') }}">Sales</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('customer') }}">Customer</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('country') }}">Country</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('product') }}">Product</a></li>
+                    <br>
+                </nav>
             </div>
-          </div>
-        </div>
-        <div class="col-sm-3">
-                <br>
+        <div class="col-sm-9">
+            <br>
             <div class="border border-info text-white">
-              <div class="card-body">
-                <h4>Pages</h4>
-                <p>100 Million</p>
-              </div>
+                <div class="card-body mb-3">
+                    <h4>Dashboard</h4>
+                    <p>test</p>
+                </div>
             </div>
+        <div class="row">
+            <div class="col-sm-3">
+            <br>
+                <div class="border border-info text-white">
+                    <div class="card-body mb-3">
+                        <h4>Total Sales</h4>
+                        <p>$ {{ sales }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+            <br>
+                <div class="border border-info text-white">
+                    <div class="card-body mb-3">
+                        <h4>Not knwon</h4>
+                        <p>1 Million</p>
+                    </div>
+                </div>
         </div>
         <div class="col-sm-3">
             <br>
           <div class="border border-info text-white">
-            <div class="card-body">
+            <div class="card-body mb-3">
                 <h4>Sessions</h4>
                 <p>10 Million</p>
             </div>
@@ -66,7 +61,7 @@
         <div class="col-sm-3">
             <br>
           <div class="border border-info text-white">
-            <div class="card-body">
+            <div class="card-body mb-3">
                 <h4>Bounce</h4>
                 <p>30%</p>
             </div>

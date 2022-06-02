@@ -7,36 +7,68 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="{{ url_for('static', filename='js/chart.min.js') }}" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="module">
+        const RFMClass = document.querySelector("#RFMClass").getContext("2d");
+        const RFMScore = document.querySelector("#RFMScore").getContext("2d");
+
+        import { getRFMScore, RFMScoreConfig, rfmClassData, rfmClassConfig } from  "{{ url_for('static', filename='js/script.js') }}"
+
+        const classSegment = {{ class_segment | safe }};
+        const R = {{ RSeg | safe }};
+        let F = {{ FSeg | safe }};
+
+        const rfm_score = {{ score_key | safe }};
+        const rfmScoreVal = {{ score_val | safe }};
+
+        let rfm_class = {{ class_key | safe }};
+        rfm_class = rfm_class.map(Number);
+
+        const rfmClassVal = {{ class_val | safe }};
+        const data = getRFMScore(rfm_score, rfmScoreVal);
+        const config = RFMScoreConfig(data);
+
+        const rfm_class_data = rfmClassData(rfm_class, rfmClassVal);
+        const rfm_class_config = rfmClassConfig(rfm_class_data);
+
+        const rfmScoreChart = new Chart(RFMScore, config);
+        const rfmClassChart = new Chart(RFMClass, rfm_class_config);
+
+        RFMScore.canvas.parentNode.style.height = "520px";
+        RFMScore.canvas.parentNode.style.width = "920px";
+
+        rfmClassChart.canvas.parentNode.style.height = "520px";
+        rfmClassChart.canvas.parentNode.style.width = "920px";
+    </script>
     <title>Customer</title>
 </head>
 <body>
     <div class="container">
-    <a href= "{{ url_for('home') }}" class="btn btn-outline-info">Return to home page</a>
         <div class="row">
-            <div class="col-m-3">
-                <table class="table table-dark table-hover">
+            <div class="col-m-2">
+                <table class="table table-dark table-hover table-bordered border-info">
                     <thead>
-                        <tr class="text-white text-bold">
-                            <th>Quantile</th>
-                            <th>Recency</th>
-                            <th>Frequency</th>
-                            <th>Monetary</th>
+                        <br><h1 class="text-white text-bold" style="font-family : optima">RFM Table</h1>
+                        <tr class="text-center text-white text-bold">
+                            <th style="font-family : optima">Quantile</th>
+                            <th style="font-family : optima">Recency</th>
+                            <th style="font-family : optima">Frequency</th>
+                            <th style="font-family : optima">Monetary</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="text-white">
+                        <tr class="text-center text-white">
                             <td>25 %</td>
                             <td>{{ R_Quant[0] }}</td>
                             <td>{{ F_Quant[0] }}</td>
                             <td>{{ M_Quant[0] }}</td>
                         </tr>
-                        <tr class="text-white">
+                        <tr class="text-center text-white">
                             <td>50 %</td>
                             <td>{{ R_Quant[1] }}</td>
                             <td>{{ F_Quant[1] }}</td>
                             <td>{{ M_Quant[1] }}</td>
                         </tr>
-                        <tr class="text-white">
+                        <tr class="text-center text-white">
                             <td>75 %</td>
                             <td>{{ R_Quant[2] }}</td>
                             <td>{{ F_Quant[2] }}</td>
@@ -44,49 +76,19 @@
                         </tr>
                     </tbody>
                 </table>
+                <a href= "{{ url_for('home') }}" class="btn btn-outline-info">Return to home page</a>
             </div>
-            <div class="card-columns">
-                <div class="card-bg-primary col-m-3">
-                    <canvas id="RFMScore"></canvas>
-                </div>
-                <div class="card-bg-success col-m-3">
-                    <canvas id="RFMClass"></canvas>
+            <div class="card" style="background : #333333">
+                <div class="card-body">
+                    <div class="card-dark">
+                        <canvas id="RFMScore"></canvas>
+                    </div>
+                    <div class="card-dark">
+                        <canvas id="RFMClass"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<script type="module">
-    const RFMClass = document.querySelector("#RFMClass").getContext("2d");
-    const RFMScore = document.querySelector("#RFMScore").getContext("2d");
-
-    import { getRFMScore, RFMScoreConfig, rfmClassData, rfmClassConfig } from  "{{ url_for('static', filename='js/script.js') }}"
-
-    const classSegment = {{ class_segment | safe }};
-    const R = {{ RSeg | safe }};
-    let F = {{ FSeg | safe }};
-
-    const rfm_score = {{ score_key | safe }};
-    const rfmScoreVal = {{ score_val | safe }};
-
-    let rfm_class = {{ class_key | safe }};
-    rfm_class = rfm_class.map(Number);
-
-    const rfmClassVal = {{ class_val | safe }};
-
-    const data = getRFMScore(rfm_score, rfmScoreVal);
-    const config = RFMScoreConfig(data);
-
-    const rfm_class_data = rfmClassData(rfm_class, rfmClassVal);
-    const rfm_class_config = rfmClassConfig(rfm_class_data);
-
-    const rfmScoreChart = new Chart(RFMScore, config);
-    const rfmClassChart = new Chart(RFMClass, rfm_class_config);
-
-    RFMScore.canvas.parentNode.style.height = "520px";
-    RFMScore.canvas.parentNode.style.width = "920px";
-
-    rfmClassChart.canvas.parentNode.style.height = "520px";
-    rfmClassChart.canvas.parentNode.style.width = "920px";
-</script>
 </body>
 </html>
