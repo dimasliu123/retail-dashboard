@@ -8,7 +8,7 @@
     <script src="{{ url_for('static', filename='js/chart.min.js') }}" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 <!--
     <style>
         tr {
@@ -33,7 +33,7 @@
                     <h3 style="color:whitesmoke; font-family:optima;">Total Sales (Monthly) :</h3>
                     <h3 id="TotalSales" style="color:whitesmoke; font-family:optima;"></h3>
                     <div class="dropdown">
-                        <button style="font-family : optima" type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown">
+                        <button name="submit-btn" style="font-family : optima" type="submit" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" id="opt">
                             Choose Date (Year-Month) :
                         </button>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
@@ -63,6 +63,7 @@
 
         const countrySales = {{ country_sales | safe }};
         console.log(countrySales);
+        const opt = document.querySelector("#opt")
 
         const country_data = countryData(countrySales)
         let totalSales = Math.round(getTotal(countrySales));
@@ -70,21 +71,22 @@
 
         let TotalSales = document.querySelector("#TotalSales");
         TotalSales.innerHTML = totalSales;
+        console.log(country_data)
 
         let country_chart = new Chart(monthChart, chartConfig);
         country_chart.canvas.parentNode.style.width = "1020px";
         country_chart.canvas.parentNode.style.height = "720px";
 
-//        opt.onchange = () => {
-//            const randColor = randColorGenerator(8)
-//            selectedData = findArr(dates, country, sales, opt.value) 
-//            country_chart.data.labels = selectedData.Country
-//            country_chart.data.datasets.data = selectedData.Sales
-//            country_chart.data.datasets.backgroundColor = randColor
-//            country_chart.update()
-//            totalSales = Math.round(getTotal(selectedData.Sales))
-//            TotalSales.innerHTML = totalSales;
-//        }
+        opt.onsubmit = () => {
+            const randColor = randColorGenerator(8)
+            selectedData = findArr(dates, country, sales, opt.value) 
+            country_chart.data.labels = selectedData.Country
+            country_chart.data.datasets.data = selectedData.Sales
+            country_chart.data.datasets.backgroundColor = randColor
+            country_chart.update()
+            totalSales = Math.round(getTotal(selectedData.Sales))
+            TotalSales.innerHTML = totalSales;
+        }
     </script>
 </body>
 </html>

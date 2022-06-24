@@ -205,7 +205,7 @@ export const rfmClassConfig = (data) => {
 }
 
 export const countryData = (total) => {
-    const color = randomColorGenerator(6)
+    const color = randomColorGenerator(8)
     const data = { 
         datasets: [{
             data: total,
