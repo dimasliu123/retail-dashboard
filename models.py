@@ -1,3 +1,4 @@
+from utils import timeSeriesData
 from collections import Counter, OrderedDict
 import statistics
 from datetime import date, datetime, timedelta
@@ -12,6 +13,7 @@ engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
 
 # For product analysis
+x = db.select(
 """
 SELECT InvoiceDate, InvoiceNo, CustomerID, 
 GROUP_CONCAT(Description, ", ") AS "ProductBought", 
@@ -19,7 +21,8 @@ SUM(TotalPrice) AS Totals
 FROM RetailSales GROUP BY InvoiceNo 
 ORDER BY InvoiceDate;
 """
-
+)
+print(x)
 #query = db.select([
 #    Retail.InvoiceNo, 
 #    Retail.InvoiceDate, 
@@ -47,18 +50,6 @@ def totalSales():
     ])
     sales = engine.execute(query).fetchall()
     return list(sales)[0][0]
-
-def timeSeriesData(data):
-    ts = []
-
-    for i in data :
-        d = { 
-            "x" : str(datetime.strptime(i.Date, "%Y-%m-%d")), "y" :  i.Sales
-        }
-        ts.append(d)
-
-    return ts
-
 
 def DailySales():
     query = db.select([
@@ -105,8 +96,8 @@ def CountrySales(dates):
     countrySales = queryCountry(country_sales, dates)
     return countrySales
 
-# min -> 2010-12 
-# max -> 2011-12
+# min. date -> 2010-12 
+# max. date -> 2011-12
 
 def segR(R, R_Quant):
     RSeg = []

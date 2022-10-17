@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel ="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <script src="{{ url_for('static', filename='js/chart.min.js') }}" integrity="sha512-QSkVNOCYLtj73J4hbmVoOV6KVZuMluZlioC+trLpewV8qMjsWqlIQvkn1KGX2StWvPMdWGBqim1xlC8krl1EKQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}" refrrerpolicy="no-referrer" crossorigin="anonymous"></script>
     <script type="module">
         import { getSalesData, getSalesConfig } from "{{ url_for('static', filename='js/script.js') }}"
         const dailyChart = document.querySelector("#DailySales").getContext("2d");

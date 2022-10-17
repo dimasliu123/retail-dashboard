@@ -15,10 +15,10 @@
                 <nav class="nav-item">
                     <br><h2 class="d-block text-white" style="font-family : optima">Retail Dashboard</h2><br>
                     <li class="d-block btn btn-info btn-m" disabled><a class="nav-link text-white" style="font-family : optima">Dashboard</a></li><br>
-                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('sales') }}">Sales</a></li><br>
-                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('customer') }}">Customer</a></li><br>
-                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('country') }}">Country</a></li><br>
-                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('product') }}">Product</a></li>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('sales') }}" target="_blank">Sales</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('customer') }}" target="_blank">Customer</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('country') }}" target="_blank">Country</a></li><br>
+                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('product') }}" target="_blank">Product</a></li>
                     <br>
                 </nav>
             </div>
@@ -36,7 +36,7 @@
                 <div class="border border-info text-white">
                     <div class="card-body mb-3">
                         <h4>Total Sales</h4>
-                        <p>$ {{ sales }}</p>
+                        <p>{{ sales }}</p>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
             <br>
                 <div class="border border-info text-white">
                     <div class="card-body mb-3">
-                        <h4>Best Combo</h4>
+                        <h4>Country</h4>
                         <p></p>
                     </div>
                 </div>
@@ -53,8 +53,8 @@
             <br>
           <div class="border border-info text-white">
             <div class="card-body mb-3">
-                <h4>Sessions</h4>
-                <p>10 Million</p>
+                <h4>Product</h4>
+                <p></p>
             </div>
           </div>
         </div>
@@ -62,8 +62,8 @@
             <br>
           <div class="border border-info text-white">
             <div class="card-body mb-3">
-                <h4>Bounce</h4>
-                <p>30%</p>
+                <h4>X</h4>
+                <p></p>
             </div>
           </div>
         </div>

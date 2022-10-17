@@ -5,8 +5,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    sales = totalSales()
-    return render_template("index.html", sales=round(sales, 2))
+    sales = round(totalSales(), 2)
+    return render_template("index.html", sales = "$ {:0,.2f}".format(sales))
 
 @app.route("/sales/")
 def sales():
