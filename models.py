@@ -13,7 +13,6 @@ engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
 
 # For product analysis
-x = db.select(
 """
 SELECT InvoiceDate, InvoiceNo, CustomerID, 
 GROUP_CONCAT(Description, ", ") AS "ProductBought", 
@@ -21,8 +20,7 @@ SUM(TotalPrice) AS Totals
 FROM RetailSales GROUP BY InvoiceNo 
 ORDER BY InvoiceDate;
 """
-)
-print(x)
+
 #query = db.select([
 #    Retail.InvoiceNo, 
 #    Retail.InvoiceDate, 
