@@ -4,6 +4,7 @@ import statistics
 from datetime import date, datetime, timedelta
 import sqlalchemy as db
 from sqlalchemy import func as F
+from sqlalchemy import text
 from sqlalchemy.sql import column
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -21,6 +22,7 @@ FROM RetailSales GROUP BY InvoiceNo
 ORDER BY InvoiceDate;
 """
 
+"SELECT Country, "
 #query = db.select([
 #    Retail.InvoiceNo, 
 #    Retail.InvoiceDate, 
@@ -42,12 +44,22 @@ class Retail(Base):
     Country = db.Column(db.Text)
     TotalPrice = db.Column(db.Float)
 
+def getHotProduct():
+    query = text("SELECT Description, SUM(Quantity) AS TotQuant, SUM(TotalPrice) AS Sales FROM RetailSales GROUP BY Description ORDER BY TotQuant DESC")
+    product, quantity, sales = engine.execute(query).fetchone()
+    return product, quantity, sales
+
+def highestCountrySales():
+    query = text("SELECT Country, SUM(TotalPrice) as Sales FROM RetailSales GROUP BY Country ORDER BY Sales DESC")
+    country, sales = engine.execute(query).fetchone()
+    return country, round(sales, 2)
+
 def totalSales():
     query = db.select([
         F.sum(Retail.TotalPrice).label("Sales")
     ])
-    sales = engine.execute(query).fetchall()
-    return list(sales)[0][0]
+    sales = engine.execute(query).fetchone()
+    return tuple(sales)[0]
 
 def DailySales():
     query = db.select([

@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Dashboard</title>
+    <title>Retail Dashboard</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 <body>
     <div class="container">
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 hidden-m">
                 <nav class="nav-item">
-                    <br><h2 class="d-block text-white" style="font-family : optima">Retail Dashboard</h2><br>
+                    <br><h1 class="d-block text-white" style="font-family : optima">Retail Dashboard</h1><br>
                     <li class="d-block btn btn-info btn-m" disabled><a class="nav-link text-white" style="font-family : optima">Dashboard</a></li><br>
                     <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('sales') }}" target="_blank">Sales</a></li><br>
                     <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('customer') }}" target="_blank">Customer</a></li><br>
                     <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('country') }}" target="_blank">Country</a></li><br>
-                    <li class="d-block btn btn-outline-info btn-m"><a style="font-family : optima" class="nav-link text-white" href="{{ url_for('product') }}" target="_blank">Product</a></li>
                     <br>
                 </nav>
             </div>
@@ -26,8 +25,8 @@
             <br>
             <div class="border border-info text-white">
                 <div class="card-body mb-3">
-                    <h4>Dashboard</h4>
-                    <p>test</p>
+                    <h2>Dashboard</h2>
+                    <p><strong>Retail Dashboard</strong> a summary </p>
                 </div>
             </div>
         <div class="row">
@@ -35,8 +34,8 @@
             <br>
                 <div class="border border-info text-white">
                     <div class="card-body mb-3">
-                        <h4>Total Sales</h4>
-                        <p>{{ sales }}</p>
+                        <h3>Total Sales</h3>
+                        <p>{{ total_sales }}</p>
                     </div>
                 </div>
             </div>
@@ -44,30 +43,24 @@
             <br>
                 <div class="border border-info text-white">
                     <div class="card-body mb-3">
-                        <h4>Country</h4>
-                        <p></p>
+                        <h3>Country</h3>
+                        <p>{{ top_country }}</p>
+                        <p>{{ top_country_sales }}</p>
                     </div>
                 </div>
         </div>
-        <div class="col-sm-3">
+            <div class="col-sm-3">
             <br>
-          <div class="border border-info text-white">
-            <div class="card-body mb-3">
-                <h4>Product</h4>
-                <p></p>
+                <div class="border border-info text-white">
+                    <div class="card-body mb-3">
+                        <h3>Top Product</h3>
+                        <p><strong>{{ hot_product }}</strong></p>
+                        <p><strong>{{ product_quantity }}</strong> quantity purchased</p>
+                        <p>{{ product_sales }}</p>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        <div class="col-sm-3">
-            <br>
-          <div class="border border-info text-white">
-            <div class="card-body mb-3">
-                <h4>X</h4>
-                <p></p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 </body>
 </html>

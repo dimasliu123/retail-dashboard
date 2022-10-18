@@ -1,3 +1,4 @@
+from validation import HomeDataValidation
 from flask import Flask, redirect, render_template, url_for, request
 from models import *
 
@@ -5,8 +6,27 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    sales = round(totalSales(), 2)
-    return render_template("index.html", sales = "$ {:0,.2f}".format(sales))
+    DOLLAR_FORMAT = "$ {:0,.2f}"
+    top_country, top_country_sales = highestCountrySales()
+    hot_product, product_quantity, product_sales = getHotProduct()
+
+    home_data = HomeDataValidation(
+                    total_sales = round(totalSales(), 2), 
+                    top_country = top_country, 
+                    top_country_sales = top_country_sales,
+                    hot_product = hot_product,
+                    product_quantity = product_quantity,
+                    product_sales = product_sales
+                    )
+
+    return render_template("index.html",
+                            total_sales = DOLLAR_FORMAT.format(home_data.total_sales), 
+                            top_country = home_data.top_country, 
+                            top_country_sales = DOLLAR_FORMAT.format(home_data.top_country_sales),
+                            hot_product = home_data.hot_product,
+                            product_quantity = home_data.product_quantity,
+                            product_sales = DOLLAR_FORMAT.format(home_data.product_sales)
+                        )
 
 @app.route("/sales/")
 def sales():
@@ -34,12 +54,9 @@ def country():
     if request.method == "POST":
         country_sales = request.form["submit-btn"]
         print(country_sales)
+
     elif request.method == "GET":
         return render_template("country.html", country_sales = country_sales)
 
-@app.route("/product/")
-def product():
-    return render_template("product.html")
-
 if __name__ == "__main__":
-    app.run(debug=True, port="8080")
+    app.run(debug=True, port="5000")
