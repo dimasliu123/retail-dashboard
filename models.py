@@ -13,26 +13,6 @@ end_date = datetime(2011, 12, 10)
 engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
 
-# For product analysis
-"""
-SELECT InvoiceDate, InvoiceNo, CustomerID, 
-GROUP_CONCAT(Description, ", ") AS "ProductBought", 
-SUM(TotalPrice) AS Totals 
-FROM RetailSales GROUP BY InvoiceNo 
-ORDER BY InvoiceDate;
-"""
-
-"SELECT Country, "
-#query = db.select([
-#    Retail.InvoiceNo, 
-#    Retail.InvoiceDate, 
-#    Retail.CustomerID, 
-#    F.group_concat(Retail.Description, ", ").label("ProductBought"), 
-#    F.sum(Retail.TotalPrice).label("TotalBought")
-#]).group_by(Retail.InvoiceNo)
-#z = engine.execute(query).fetchall()
-
-
 class Retail(Base):
     __tablename__ = "RetailSales"
     InvoiceNo = db.Column(db.Integer, primary_key=True)
@@ -198,12 +178,13 @@ def getCountrySales():
         ORDER BY Sales DESC;
     '''
     res = engine.execute(text(query)).fetchall()
-    date, country, sales = zip(*res)
-    return list(date), list(country), list(sales)
+    query_date, query_country, query_sales = zip(*res)
+    return list(query_date), list(query_country), list(query_sales)
 
 def getTable(num_limit : int = 50):
     query = f'''
-        SELECT * FROM RetailSales ORDER BY InvoiceDate ASC LIMIT {num_limit}; 
+        SELECT * FROM RetailSales 
+        ORDER BY InvoiceDate ASC LIMIT {num_limit}; 
     '''
     res = engine.execute(text(query)).fetchall()
     return res

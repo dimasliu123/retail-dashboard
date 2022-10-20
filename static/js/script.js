@@ -208,10 +208,10 @@ export const rfmClassConfig = (data) => {
     return config;
 }
 
-// Customer page
+// Customer Page
 
-// Country page
-export const countryData = (country, sales) => {
+// Country Page
+export const getCountryData = (country, sales) => {
     const color = randomColorGenerator(country.length) ;
     const data = {
         labels : country,
@@ -263,16 +263,29 @@ export const countryConfig = (data) => {
     return config;
 }
 
-export const findData = (input_date, dateData, countryData, salesData) => {
+export function findSales (input_date, date_data, country_data, sales_data) {
+    const num_array = date_data.length
+
     const selected_country = []
     const selected_sales = []
 
-    for (let i = 0; i < taken_date.length; i++) {
-        if (dateData[i] ==  input_date) {
-            selected_country.push(countryData[i])
-            selected_sales.push(salesData[i])
+    for (let i = 0; i < num_array; i++) {
+        if (date_data[i] == input_date) {
+            let i_country = country_data[i]
+            let i_sales = sales_data[i]
+            selected_country.push(i_country)
+            selected_sales.push(i_sales)
         }
     }
-    return selected_country, selected_sales;
+    return [selected_country, selected_sales]
 }
-// Country page
+
+export const getMaximumVal = (salesData) => {
+    let max_sales = 0;
+    for (let i = 0; i < salesData.length; i++) {
+        max_sales += salesData[i]
+    }
+    return max_sales;
+}
+
+// Country Page

@@ -1,6 +1,7 @@
 from validation import HomeDataValidation
 from flask import Flask, redirect, render_template, url_for, request
 from models import *
+import json
 
 DOLLAR_FORMAT = "$ {:0,.2f}"
 
@@ -52,15 +53,11 @@ def customer():
 
 @app.route("/country/")
 def country():
-    date, country, sales = getCountrySales()
-    for i in country :
-        print(country, end="\t")
-    total_sales = DOLLAR_FORMAT.format(sum(sales))
+    query_date, query_country, query_sales = getCountrySales()
     return render_template("country.html", 
-                            date = date,
-                            country = country, 
-                            sales = sales,
-                            total_sales = total_sales
+                            query_date = query_date,
+                            query_country = query_country, 
+                            query_sales = query_sales,
                             )
 
 @app.route("/table/")

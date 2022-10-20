@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Sales</title>
     <link rel ="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='js/chart.min.js') }}" refrrerpolicy="no-referrer"></script>
     <script type="module">
         import { getSalesData, getSalesConfig } from "{{ url_for('static', filename='js/script.js') }}"
+        const updateBtn = document.querySelector("#update")
         const dailyChart = document.querySelector("#DailySales").getContext("2d");
 
         const total = {{ total | safe }};
@@ -21,18 +23,31 @@
             dailyChart,
             config
         );
+        updateBtn.addEventListener("click", () => {
+            if (updateBtn.innerHTML == "Normal") {
+                SalesChart.options.plugins.title.text = "Daily Sales (Log)"
+                SalesChart.options.scales.y.type = "logarithmic"
+                SalesChart.update();
+                updateBtn.innerHTML = "Logarithmic"
+            }
+            else if (updateBtn.innerHTML == "Logarithmic") {
+                SalesChart.options.plugins.title.text = "Daily Sales"
+                SalesChart.options.scales.y.type = "linear"
+                SalesChart.update();
+                updateBtn.innerHTML = "Normal"
+            }
+        })
+        let x = SalesChart.options.
         SalesChart.canvas.parentNode.style.width = "1380px";
         SalesChart.canvas.parentNode.style.height = "720px";
     </script>
-    <title>Daily Sales</title>
 </head>
 <body style="background : #333333">
-    <div class="text-white">
-        <p id="date"></p>
-        <p id="sales"></p>
-    </div>
-    <div>
-        <canvas id="DailySales"></canvas>
+    <div class="container">
+        <button class="btn btn-outline-info btn-dark" type="button" id="update">Normal</button>
+        <div>
+            <canvas id="DailySales"></canvas>
+        </div>
     </div>
 </body>
 </html>

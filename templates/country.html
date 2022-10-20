@@ -16,6 +16,7 @@
                 <div class="card-header">
                     <h2 style="color: #F5F5F5; font-family:optima;">Total Sales (Monthly) :</h2>
                     <p style="color: #F5F5F5; font-family:optima;"><strong>{{ total_sales }}</strong></p>
+                    <p id="monthly-sales" style="color: #F5F5F5; font-famiy:optima;"></p>
                     <h3 id="TotalSales" style="color:whitesmoke; font-family:optima;"></h3>
                     <select onChange="getSelectedValue();" class="form-select-sm btn btn-outline-info" id="change-date">
                         <datalist>
@@ -47,14 +48,20 @@
         }
     </script>
     <script type="module">
-        import { countryData, countryConfig, randColorGenerator, findData } from "{{ url_for('static', filename='js/script.js') }}"
+        import { getCountryData, countryConfig, randColorGenerator, getMaximumVal, findSales } from "{{ url_for('static', filename='js/script.js') }}"
         let monthChart = document.querySelector("#country-monthly").getContext("2d");
-
-        const country = {{ country | safe }};
-        const sales = {{ sales | safe }};
         const opt = document.querySelector("#opt")
 
-        const country_data = countryData(country, sales)
+        const query_date = {{ query_date | safe }};
+        const query_country = {{ query_country | safe }};
+        const query_sales = {{ query_sales | safe }};
+        const max_sales = getMaximumVal(query_sales);
+
+        const data = findSales("2011-12", query_date, query_country, query_sales)
+        const selectedCountry = data[0]
+        const selectedSales = data[1]
+
+        const country_data = getCountryData(selectedCountry, selectedSales)
         const chartConfig = countryConfig(country_data);
 
         let country_chart = new Chart(monthChart, chartConfig);
