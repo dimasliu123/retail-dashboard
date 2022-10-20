@@ -5,88 +5,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Country Sales</title>
-    <script src="{{ url_for('static', filename='js/chart.min.js') }}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-<!--
-    <style>
-        tr {
-            display : block;
-            float : left;
-        }
-        th {
-            display : block;
-        }
-        td {
-            display : block;
-        }
-
-    </style>
-//-->
 </head>
 <body>
     <div class="container">
-        <a href = "{{ url_for('home') }}" class="btn btn-outline-info" style="font-family:optima">Return to home page</a>
             <div class="card border-info" style="background : #333333">
                 <div class="card-header">
-                    <h3 style="color:whitesmoke; font-family:optima;">Total Sales (Monthly) :</h3>
+                    <h2 style="color: #F5F5F5; font-family:optima;">Total Sales (Monthly) :</h2>
+                    <p style="color: #F5F5F5; font-family:optima;"><strong>{{ total_sales }}</strong></p>
                     <h3 id="TotalSales" style="color:whitesmoke; font-family:optima;"></h3>
-                    <div class="dropdown">
-                        <button name="submit-btn" style="font-family : optima" type="submit" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" id="opt">
-                            Choose Date (Year-Month) :
-                        </button>
-                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                                <li><a class="dropdown-item active" href="#">2010-12</a></li>
-                                <li><a class="dropdown-item" href="#">2011-01</a></li>
-                                <li><a class="dropdown-item" href="#">2011-02</a></li>
-                                <li><a class="dropdown-item" href="#">2011-03</a></li>
-                                <li><a class="dropdown-item" href="#">2011-04</a></li>
-                                <li><a class="dropdown-item" href="#">2011-05</a></li>
-                                <li><a class="dropdown-item" href="#">2011-06</a></li>
-                                <li><a class="dropdown-item" href="#">2011-07</a></li>
-                                <li><a class="dropdown-item" href="#">2011-08</a></li>
-                                <li><a class="dropdown-item" href="#">2011-09</a></li>
-                                <li><a class="dropdown-item" href="#">2011-10</a></li>
-                                <li><a class="dropdown-item" href="#">2011-11</a></li>
-                                <li><a class="dropdown-item" href="#">2011-12</a></li>
-                            </ul>
-                    </div>
+                    <select onChange="getSelectedValue();" class="form-select-sm btn btn-outline-info" id="change-date">
+                        <datalist>
+                            <option value="2010-12">2010-12</option>
+                            <option value="2011-01">2011-01</option>
+                            <option value="2011-02">2011-02</option>
+                            <option value="2011-03">2011-03</option>
+                            <option value="2011-04">2011-04</option>
+                            <option value="2011-05">2011-05</option>
+                            <option value="2011-06">2011-06</option>
+                            <option value="2011-07">2011-07</option>
+                            <option value="2011-08">2011-08</option>
+                            <option value="2011-09">2011-09</option>
+                            <option value="2011-10">2011-10</option>
+                            <option value="2011-11">2011-11</option>
+                            <option value="2011-12" selected="selected">2011-12</option>
+                        </datalist>
+                    </select>
                 </div>
                 <canvas id="country-monthly"></canvas>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        const getSelectedValue = () => {
+            let e = document.querySelector("#change-date");
+            let selVal = e.options[e.selectedIndex].value;
+            return selVal
+        }
+    </script>
     <script type="module">
-        import { countryData, countryConfig, randColorGenerator, getTotal } from "{{ url_for('static', filename='js/script.js') }}"
+        import { countryData, countryConfig, randColorGenerator, findData } from "{{ url_for('static', filename='js/script.js') }}"
         let monthChart = document.querySelector("#country-monthly").getContext("2d");
 
-        const countrySales = {{ country_sales | safe }};
-        console.log(countrySales);
+        const country = {{ country | safe }};
+        const sales = {{ sales | safe }};
         const opt = document.querySelector("#opt")
 
-        const country_data = countryData(countrySales)
-        let totalSales = Math.round(getTotal(countrySales));
+        const country_data = countryData(country, sales)
         const chartConfig = countryConfig(country_data);
 
-        let TotalSales = document.querySelector("#TotalSales");
-        TotalSales.innerHTML = totalSales;
-        console.log(country_data)
-
         let country_chart = new Chart(monthChart, chartConfig);
-        country_chart.canvas.parentNode.style.width = "1020px";
+        country_chart.canvas.parentNode.style.width = "1080px";
         country_chart.canvas.parentNode.style.height = "720px";
 
-        opt.onsubmit = () => {
-            const randColor = randColorGenerator(8)
-            selectedData = findArr(dates, country, sales, opt.value) 
-            country_chart.data.labels = selectedData.Country
-            country_chart.data.datasets.data = selectedData.Sales
-            country_chart.data.datasets.backgroundColor = randColor
-            country_chart.update()
-            totalSales = Math.round(getTotal(selectedData.Sales))
-            TotalSales.innerHTML = totalSales;
-        }
     </script>
 </body>
 </html>

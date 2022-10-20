@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel ="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-    <script src="{{ url_for('static', filename='js/chart.min.js') }}" refrrerpolicy="no-referrer" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/chart.min.js') }}" refrrerpolicy="no-referrer"></script>
     <script type="module">
         import { getSalesData, getSalesConfig } from "{{ url_for('static', filename='js/script.js') }}"
         const dailyChart = document.querySelector("#DailySales").getContext("2d");
@@ -24,10 +24,9 @@
         SalesChart.canvas.parentNode.style.width = "1380px";
         SalesChart.canvas.parentNode.style.height = "720px";
     </script>
-    <title>Sales</title>
+    <title>Daily Sales</title>
 </head>
 <body style="background : #333333">
-    <a href = "{{ url_for('home') }}" class="btn btn-outline-info text-white" style="font-family : optima">Return to home page</a>
     <div class="text-white">
         <p id="date"></p>
         <p id="sales"></p>

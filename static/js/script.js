@@ -1,3 +1,4 @@
+// Sales Page
 export const getSalesData = (total, member, non_member) => {
     const data = { 
         datasets : [
@@ -7,23 +8,23 @@ export const getSalesData = (total, member, non_member) => {
                 fill : false,
                 borderColor : "#0080FF",
                 backgroundColor : "transparent",
-                tension : 0.15,
+                tension : 0.20,
             },
             {
                 label : "Member Sales",
                 data : member,
-                fill : true,
+                fill : false,
                 borderColor : "#DC143C",
                 backgroundColor : "transparent",
-                tension : 0.15,
+                tension : 0.20,
             },
             {
                 label : "Non Member Sales",
                 data : non_member,
-                fill : true,
+                fill : false,
                 borderColor : "#50C878",
                 backgroundColor : "transparent",
-                tension : 0.15,
+                tension : 0.20,
             }
         ]
     }
@@ -45,7 +46,7 @@ export const getSalesConfig = (data) => {
                     display : true,
                     text : "Daily Sales",
                     color : "#F5F5F5",
-                    font : {weight : "bold", size : 24, family : "optima"}
+                    font : {weight : "bold", size : 26, family : "optima"}
                 },
                 legend : {
                     labels : {
@@ -74,6 +75,9 @@ export const getSalesConfig = (data) => {
     }
     return config;
 }
+// Sales Page
+
+// Customer Page
 
 export const getRFMScore = (Label, Value) => {
     const data = {
@@ -204,14 +208,21 @@ export const rfmClassConfig = (data) => {
     return config;
 }
 
-export const countryData = (total) => {
-    const color = randomColorGenerator(8)
-    const data = { 
-        datasets: [{
-            data: total,
-            backgroundColor : color.bgColor,
-            borderColor : color.borderColor,
-        }]
+// Customer page
+
+// Country page
+export const countryData = (country, sales) => {
+    const color = randomColorGenerator(country.length) ;
+    const data = {
+        labels : country,
+        datasets : [
+            {
+                label : "Country Sales",
+                backgroundColor : color.bgColor,
+                borderColor : color.borderColor,
+                data : sales
+            }
+        ]
     }
     return data;
 }
@@ -252,11 +263,16 @@ export const countryConfig = (data) => {
     return config;
 }
 
-export const getTotal = (arr) => {
-    let total = 0;
-    for (let i = 0; i < arr.length; i++) {
-        total += Object.values(arr[i])[1];
-    }
-    return total;
-} 
+export const findData = (input_date, dateData, countryData, salesData) => {
+    const selected_country = []
+    const selected_sales = []
 
+    for (let i = 0; i < taken_date.length; i++) {
+        if (dateData[i] ==  input_date) {
+            selected_country.push(countryData[i])
+            selected_sales.push(salesData[i])
+        }
+    }
+    return selected_country, selected_sales;
+}
+// Country page

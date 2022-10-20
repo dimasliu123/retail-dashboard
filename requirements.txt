@@ -1,2 +1,3 @@
-Flask
-sqlalchemy
+Flask == 2.2.2
+flask-paginate
+sqlalchemy == 1.4.42

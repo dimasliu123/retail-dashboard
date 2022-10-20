@@ -16,3 +16,6 @@
 <li><strong>Country</strong> : Displaying the customer based on it's country</li>
 <li><strong>Combo</strong> : Displaying the most bought product pairs based on Invoice/Customer.</li>
 </ul>
+<h2>TODO :</h2>
+<p>Add a pagination on database page</p> 
+<p>Add a button for logarithmic scale on historic sales chart</p>

@@ -2,11 +2,12 @@ from validation import HomeDataValidation
 from flask import Flask, redirect, render_template, url_for, request
 from models import *
 
+DOLLAR_FORMAT = "$ {:0,.2f}"
+
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    DOLLAR_FORMAT = "$ {:0,.2f}"
     top_country, top_country_sales = highestCountrySales()
     hot_product, product_quantity, product_sales = getHotProduct()
 
@@ -46,17 +47,27 @@ def customer():
                             M_Quant = M_Quant,
                             class_segment = class_segment,
                             RSeg = RSeg,
-                            FSeg = FSeg)
+                            FSeg = FSeg
+                            )
 
-@app.route("/country/", methods=["GET", "POST"])
+@app.route("/country/")
 def country():
-    country_sales = CountrySales("2010-12")
-    if request.method == "POST":
-        country_sales = request.form["submit-btn"]
-        print(country_sales)
+    date, country, sales = getCountrySales()
+    for i in country :
+        print(country, end="\t")
+    total_sales = DOLLAR_FORMAT.format(sum(sales))
+    return render_template("country.html", 
+                            date = date,
+                            country = country, 
+                            sales = sales,
+                            total_sales = total_sales
+                            )
 
-    elif request.method == "GET":
-        return render_template("country.html", country_sales = country_sales)
+@app.route("/table/")
+def table():
+    NUM_LIMIT : int = 50
+    data = getTable(NUM_LIMIT)
+    return render_template("table.html", data = data)
 
 if __name__ == "__main__":
     app.run(debug=True, port="5000")

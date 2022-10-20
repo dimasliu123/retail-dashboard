@@ -32,6 +32,7 @@ ORDER BY InvoiceDate;
 #]).group_by(Retail.InvoiceNo)
 #z = engine.execute(query).fetchall()
 
+
 class Retail(Base):
     __tablename__ = "RetailSales"
     InvoiceNo = db.Column(db.Integer, primary_key=True)
@@ -92,19 +93,6 @@ def queryCountry(data, dates):
             cData.append(d)
 
     return cData
-
-def CountrySales(dates):
-    query = db.select([
-        F.strftime("%Y-%m", Retail.InvoiceDate).label("Date"),
-        Retail.Country.label("Country"), 
-        F.sum(Retail.TotalPrice).label("Sales")
-    ]).group_by(F.strftime("%Y-%m", Retail.InvoiceDate)).order_by(Retail.InvoiceDate)
-
-    query = query.group_by("Country")
-
-    country_sales = engine.execute(query).fetchall()
-    countrySales = queryCountry(country_sales, dates)
-    return countrySales
 
 # min. date -> 2010-12 
 # max. date -> 2011-12
@@ -198,3 +186,27 @@ def calcRFM(sq_func = F):
     class_key, class_val = list(classCount.keys()), list(classCount.values())
 
     return score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant, RFMClassSegment,RSeg, FSeg 
+
+def getCountrySales():
+    query = f'''
+        SELECT 
+            STRFTIME("%Y-%m", InvoiceDate) DateData,
+            Country, 
+            SUM(TotalPrice) Sales
+        FROM RetailSales
+        GROUP BY Country, DateData
+        ORDER BY Sales DESC;
+    '''
+    res = engine.execute(text(query)).fetchall()
+    date, country, sales = zip(*res)
+    return list(date), list(country), list(sales)
+
+def getTable(num_limit : int = 50):
+    query = f'''
+        SELECT * FROM RetailSales ORDER BY InvoiceDate ASC LIMIT {num_limit}; 
+    '''
+    res = engine.execute(text(query)).fetchall()
+    return res
+
+def getPagination():
+    pass
