@@ -2,10 +2,11 @@
 <p>The data was taken from kaggle public data :</p>
 <p><a href="https://www.kaggle.com/datasets/rupakroy/online-retail" target="_blank">Online Retail</a></p>
 
-<h2>Assumptions</h2>
+<h2>Assumptions to be made :</h2>
 <p>A number of assumptions have been made while making this dashboard</p>
 <ol>
 <li>If the Customer ID column has no value the customer will be assumed as non-member (vice-versa to invoice that has Customer ID)</li>
+<li>Negative value on `Quantity` and `UnitPrice` columns will be dropped. (about 10,000 rows)
 </ol>
 
 <h2>List of features :</h2>
