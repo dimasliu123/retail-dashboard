@@ -57,7 +57,7 @@ def country():
     return render_template("country.html", 
                             query_date = query_date,
                             query_country = query_country, 
-                            query_sales = query_sales,
+                            query_sales = query_sales
                             )
 
 @app.route("/table/")

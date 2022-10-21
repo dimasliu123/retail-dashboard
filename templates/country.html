@@ -14,11 +14,11 @@
     <div class="container">
             <div class="card border-info" style="background : #333333">
                 <div class="card-header">
-                    <h2 style="color: #F5F5F5; font-family:optima;">Total Sales (Monthly) :</h2>
-                    <p style="color: #F5F5F5; font-family:optima;"><strong>{{ total_sales }}</strong></p>
-                    <p id="monthly-sales" style="color: #F5F5F5; font-famiy:optima;"></p>
-                    <h3 id="TotalSales" style="color:whitesmoke; font-family:optima;"></h3>
-                    <select onChange="getSelectedValue();" class="form-select-sm btn btn-outline-info" id="change-date">
+                    <div class="row">
+                        <h1 style="color: #F5F5F5; font-family:optima;">Total Sales (Monthly) :</h1>
+                        <h4 style="color: #F5F5F5; font-family:optima;" id="total-sales"></h4>
+                    </div>
+                    <select class="form-select-sm btn btn-outline-info" id="change-date">
                         <datalist>
                             <option value="2010-12">2010-12</option>
                             <option value="2011-01">2011-01</option>
@@ -48,25 +48,35 @@
         }
     </script>
     <script type="module">
-        import { getCountryData, countryConfig, randColorGenerator, getMaximumVal, findSales } from "{{ url_for('static', filename='js/script.js') }}"
-        let monthChart = document.querySelector("#country-monthly").getContext("2d");
-        const opt = document.querySelector("#opt")
+        const dollarFormat = Intl.NumberFormat("en-US")
+        import { getCountryData, countryConfig, getMaximumVal, findSales } from "{{ url_for('static', filename='js/script.js') }}"
+        const monthChart = document.querySelector("#country-monthly")
+        const totalSales = document.querySelector("#total-sales")
 
         const query_date = {{ query_date | safe }};
         const query_country = {{ query_country | safe }};
         const query_sales = {{ query_sales | safe }};
-        const max_sales = getMaximumVal(query_sales);
 
         const data = findSales("2011-12", query_date, query_country, query_sales)
-        const selectedCountry = data[0]
-        const selectedSales = data[1]
+        const country_data = getCountryData(data[0], data[1])
+        totalSales.innerHTML = `$ ${dollarFormat.format(getMaximumVal(data[1]))}`;
 
-        const country_data = getCountryData(selectedCountry, selectedSales)
         const chartConfig = countryConfig(country_data);
 
-        let country_chart = new Chart(monthChart, chartConfig);
-        country_chart.canvas.parentNode.style.width = "1080px";
-        country_chart.canvas.parentNode.style.height = "720px";
+        const countryChart = new Chart(monthChart, chartConfig);
+        countryChart.canvas.parentNode.style.width = "1080px";
+        countryChart.canvas.parentNode.style.height = "720px";
+
+        const selectingDate = document.querySelector("#change-date");
+        selectingDate.addEventListener("change", () => {
+            let e = document.querySelector("#change-date")
+            let selectedValue = e.options[e.selectedIndex].value;
+            const data = findSales(selectedValue, query_date, query_country, query_sales);
+            totalSales.innerHTML = `$ ${dollarFormat.format(getMaximumVal(data[1]))}`
+            countryChart.data.labels = data[0];
+            countryChart.data.datasets[0].data = data[1] 
+            countryChart.update()
+        })
 
     </script>
 </body>

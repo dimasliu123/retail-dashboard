@@ -129,24 +129,37 @@ def segmentRFMClass(R, F):
     return segment
 
 def calcRFM(sq_func = F): 
-    query = db.select([
-        Retail.CustomerID, sq_func.max(sq_func.strftime("%Y-%m-%d", Retail.InvoiceDate)).label("Recency"), sq_func.count(Retail.CustomerID).label("Frequency"), sq_func.sum(Retail.TotalPrice).label("Monetary")
-    ]).group_by(Retail.CustomerID)
+#    query = text('''
+#    SELECT
+#        CustomerID,
+#        MAX(STRFTIME("%Y-%m", InvoiceDate)) Recency,
+#        COUNT(CustomerID) Frequency,
+#        SUM(TotalPrice) Monetary
+#    FROM RetailSales
+#        WHERE CustomerID IS NOT NULL
+#        GROUP BY CustomerID
+#    ''')
 
+    query = db.select([
+        Retail.CustomerID, 
+        sq_func.max(sq_func.strftime("%Y-%m-%d", Retail.InvoiceDate)).label("Recency"), 
+        sq_func.count(Retail.CustomerID).label("Frequency"), 
+        sq_func.sum(Retail.TotalPrice).label("Monetary")
+    ]).group_by(Retail.CustomerID)
     query = query.filter(Retail.CustomerID.isnot(None))
     res = engine.execute(query).fetchall() # RFM
 
-    C_ID = [int(i.CustomerID) for i in res]
-    R = [int((end_date - datetime.strptime(i.Recency, "%Y-%m-%d")).days) for i in res]
-    F = [int(i.Frequency) for i in res]
-    M = [i.Monetary for i in res]
+    C_ID, R, F, M = [], [], [], []
+
+    for row in res :
+        C_ID.append(row.CustomerID)
+        R.append(int((end_date - datetime.strptime(row.Recency, "%Y-%m-%d")).days))
+        F.append(row.Frequency)
+        M.append(row.Monetary)
 
     R_Quant = statistics.quantiles(R, n=4)
-    R_Quant = [int(i) for i in R_Quant]
     F_Quant = statistics.quantiles(F, n=4)
-    F_Quant = [int(i) for i in F_Quant]
     M_Quant = statistics.quantiles(M, n=4)
-    M_Quant = [round(i, 2) for i in M_Quant]
 
     RSeg = segR(R, R_Quant)
     FSeg = segFM(F, F_Quant)

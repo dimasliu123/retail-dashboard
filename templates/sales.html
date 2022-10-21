@@ -19,27 +19,27 @@
 
         const data = getSalesData(total, member, non_member);
         const config = getSalesConfig(data);
-        const SalesChart = new Chart(
+        const salesChart = new Chart(
             dailyChart,
             config
         );
         updateBtn.addEventListener("click", () => {
             if (updateBtn.innerHTML == "Normal") {
-                SalesChart.options.plugins.title.text = "Daily Sales (Log)"
-                SalesChart.options.scales.y.type = "logarithmic"
-                SalesChart.update();
+                salesChart.options.plugins.title.text = "Daily Sales (Log)"
+                salesChart.options.scales.y.type = "logarithmic"
+                salesChart.update();
                 updateBtn.innerHTML = "Logarithmic"
             }
             else if (updateBtn.innerHTML == "Logarithmic") {
-                SalesChart.options.plugins.title.text = "Daily Sales"
-                SalesChart.options.scales.y.type = "linear"
-                SalesChart.update();
+                salesChart.options.plugins.title.text = "Daily Sales"
+                salesChart.options.scales.y.type = "linear"
+                salesChart.update();
                 updateBtn.innerHTML = "Normal"
             }
         })
-        let x = SalesChart.options.
-        SalesChart.canvas.parentNode.style.width = "1380px";
-        SalesChart.canvas.parentNode.style.height = "720px";
+        console.log(salesChart.options.scales.yAxis)
+        salesChart.canvas.parentNode.style.width = "1380px";
+        salesChart.canvas.parentNode.style.height = "720px";
     </script>
 </head>
 <body style="background : #333333">

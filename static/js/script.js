@@ -155,7 +155,7 @@ export const randColorGenerator = (numColor) => {
 
 
 export const rfmClassData = (labels, total) => {
-    const color = randomColorGenerator(6)
+    const color = randomColorGenerator(labels.length)
     const data = { 
         labels : labels,
         datasets: [{
@@ -212,7 +212,7 @@ export const rfmClassConfig = (data) => {
 
 // Country Page
 export const getCountryData = (country, sales) => {
-    const color = randomColorGenerator(country.length) ;
+    let color = randomColorGenerator(country.length) ;
     const data = {
         labels : country,
         datasets : [
@@ -285,7 +285,7 @@ export const getMaximumVal = (salesData) => {
     for (let i = 0; i < salesData.length; i++) {
         max_sales += salesData[i]
     }
-    return max_sales;
+    return Math.round((max_sales + Number.EPSILON) * 100 ) / 100;
 }
 
 // Country Page
