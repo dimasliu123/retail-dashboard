@@ -18,5 +18,4 @@
 <li><strong>Combo</strong> : Displaying the most bought product pairs based on Invoice/Customer.</li>
 </ul>
 <h2>TODO :</h2>
-<p>Add a pagination on database page</p> 
-<p>Add a button for logarithmic scale on historic sales chart</p>
+<p>Adding a association rule learning model on Market Basket Analysis page</p> 

@@ -11,23 +11,17 @@ app = Flask(__name__)
 def home():
     top_country, top_country_sales = highestCountrySales()
     hot_product, product_quantity, product_sales = getHotProduct()
-
-    home_data = HomeDataValidation(
-                    total_sales = round(totalSales(), 2), 
-                    top_country = top_country, 
-                    top_country_sales = top_country_sales,
-                    hot_product = hot_product,
-                    product_quantity = product_quantity,
-                    product_sales = product_sales
-                    )
+    total_debt = getDebt()
+    total_sales = round(totalSales(), 2)
 
     return render_template("index.html",
-                            total_sales = DOLLAR_FORMAT.format(home_data.total_sales), 
-                            top_country = home_data.top_country, 
-                            top_country_sales = DOLLAR_FORMAT.format(home_data.top_country_sales),
-                            hot_product = home_data.hot_product,
-                            product_quantity = home_data.product_quantity,
-                            product_sales = DOLLAR_FORMAT.format(home_data.product_sales)
+                            total_debt = DOLLAR_FORMAT.format(total_debt),
+                            total_sales = DOLLAR_FORMAT.format(total_sales), 
+                            top_country = top_country, 
+                            top_country_sales = DOLLAR_FORMAT.format(top_country_sales),
+                            hot_product = hot_product,
+                            product_quantity = product_quantity,
+                            product_sales = DOLLAR_FORMAT.format(product_sales)
                         )
 
 @app.route("/sales/")

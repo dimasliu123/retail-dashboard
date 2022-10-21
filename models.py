@@ -13,6 +13,7 @@ end_date = datetime(2011, 12, 10)
 engine = db.create_engine("sqlite:///data.db", echo=True)
 Base = declarative_base()
 
+
 class Retail(Base):
     __tablename__ = "RetailSales"
     InvoiceNo = db.Column(db.Integer, primary_key=True)
@@ -36,11 +37,27 @@ def highestCountrySales():
     return country, round(sales, 2)
 
 def totalSales():
-    query = db.select([
-        F.sum(Retail.TotalPrice).label("Sales")
-    ])
+    query = text(
+        """
+        SELECT SUM(TotalPrice) AS Sales
+        FROM RetailSales
+        WHERE Description NOT LIKE '%debt%'
+        """
+    )
     sales = engine.execute(query).fetchone()
-    return tuple(sales)[0]
+    return sales[0]
+
+def getDebt():
+    query = text(
+        """
+        SELECT SUM(TotalPrice) as Debt
+        FROM RetailSales
+        WHERE Description NOT LIKE '%debt%'
+        """
+    )
+    debt = engine.execute(query).fetchone()
+    return debt[0]
+
 
 def DailySales():
     query = db.select([

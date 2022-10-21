@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Database</title>
+    <title>Market Basket Analysis</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="{{ url_for('static', filename='js/chart.min.js') }}" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -14,41 +15,10 @@
 <body>
     <div class="container">
         <div class ="top-left">
-            <h1 class="text-white text-bold" style="font-family : optima">Database Table</h1>
+            <h1 class="text-white text-bold" style="font-family : optima">Market Basket Analysis</h1>
         </div>
-        <div class="table-responsive-xl">
-            <table class="table table-borderless table-dark table-hover table-striped ">
-                <thead>
-                    <tr style="background-color: #F5F5F5" class="text-center text-info text-bold">
-                        <th style="font-family: optima"><strong>No.</strong></th>
-                        <th style="font-family: optima"><strong>Invoice No.</strong></th>
-                        <th style="font-family: optima"><strong>Stock Code</strong></th>
-                        <th style="font-family: optima"><strong>Description</strong></th>
-                        <th style="font-family: optima"><strong>Quantity</strong></th>
-                        <th style="font-family: optima"><strong>Invoice Date</strong></th>
-                        <th style="font-family: optima"><strong>Unit Price</strong></th>
-                        <th style="font-family: optima"><strong>Customer ID</strong></th>
-                        <th style="font-family: optima"><strong>Country</strong></th>
-                        <th style="font-family: optima"><strong>Total Price</strong></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in data %}
-                        <tr scope="row" class="text-center text-white">
-                            <td>{{ loop.index }}</td>
-                            <td>{{ item[0] }}</td>
-                            <td>{{ item[1] }}</td>
-                            <td>{{ item[2] }}</td>
-                            <td>{{ item[3] }}</td>
-                            <td>{{ item[4] }}</td>
-                            <td>{{ item[5] }}</td>
-                            <td>{{ item[6] }}</td>
-                            <td>{{ item[7] }}</td>
-                            <td>{{ item[8] }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div>
+
         </div>
     </div>
 </body>

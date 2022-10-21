@@ -3,6 +3,7 @@
 <head>
     <title>Retail Dashboard</title>
     <meta charset="utf-8">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -23,40 +24,49 @@
             </div>
         <div class="col-sm-9">
             <br>
-            <div class="border border-info text-white">
+            <div class="border border-info text-white ">
                 <div class="card-body mb-3">
-                    <h2>Dashboard</h2>
-                    <p><strong>Retail Dashboard</strong> a summary </p>
+                    <h2 class="text-white">Dashboard</h2>
+                    <p class="text-white"><strong>Retail Dashboard</strong> a summary </p>
                 </div>
             </div>
         <div class="row">
-            <div class="col-sm-3">
-            <br>
+            <div class="col-sm-4 ">
+                <br>
                 <div class="border border-info text-white">
-                    <div class="card-body mb-3">
+                    <div class="card-body mb-4">
                         <h3>Total Sales</h3>
-                        <p>{{ total_sales }}</p>
+                        <p><strong>{{ total_sales }}</strong></p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
-            <br>
-                <div class="border border-info text-white">
-                    <div class="card-body mb-3">
+            <div class="col-sm-4 ">
+                <br>
+                <div class="border border-info text-white ">
+                    <div class="card-body mb-4">
                         <h3>Country</h3>
                         <p>{{ top_country }}</p>
-                        <p>{{ top_country_sales }}</p>
+                        <p><strong>{{ top_country_sales }}</strong></p>
                     </div>
                 </div>
         </div>
-            <div class="col-sm-3">
-            <br>
+            <div class="col-sm-4 ">
+                <br>
                 <div class="border border-info text-white">
-                    <div class="card-body mb-3">
+                    <div class="card-body mb-4">
                         <h3>Top Product</h3>
                         <p><strong>{{ hot_product }}</strong></p>
                         <p><strong>{{ product_quantity }}</strong> quantity purchased</p>
-                        <p>{{ product_sales }}</p>
+                        <p><strong>{{ product_sales }}</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4 ">
+                <br>
+                <div class="border border-info text-white">
+                    <div class="card-body mb-4">
+                        <h3>Customer Debt</h3>
+                        <p><strong>{{ total_debt }}<strong></p>
                     </div>
                 </div>
             </div>
