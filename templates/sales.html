@@ -38,14 +38,13 @@
                 updateBtn.innerHTML = "Normal"
             }
         })
-        console.log(salesChart.options.scales.yAxis)
         salesChart.canvas.parentNode.style.width = "1380px";
         salesChart.canvas.parentNode.style.height = "720px";
     </script>
 </head>
 <body style="background : #333333">
     <div class="container">
-        <button class="btn btn-outline-info btn-dark" type="button" id="update">Normal</button>
+        <button class="btn btn-outline-info btn-dark text-center" type="button" id="update">Normal</button>
         <div>
             <canvas id="DailySales"></canvas>
         </div>

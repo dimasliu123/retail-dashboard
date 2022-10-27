@@ -31,7 +31,7 @@ def sales():
 
 @app.route("/customer/")
 def customer():
-    score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant, class_segment, RSeg, FSeg = calcRFM()
+    score_key, score_val, class_key, class_val, R_Quant, F_Quant, M_Quant, class_segment = calcRFM()
     return render_template("cust.html",  
                             score_key = score_key, 
                             score_val = score_val,
@@ -41,8 +41,6 @@ def customer():
                             F_Quant = F_Quant,
                             M_Quant = M_Quant,
                             class_segment = class_segment,
-                            RSeg = RSeg,
-                            FSeg = FSeg
                             )
 
 @app.route("/country/")

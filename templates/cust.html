@@ -16,8 +16,6 @@
         import { getRFMScore, RFMScoreConfig, rfmClassData, rfmClassConfig } from  "{{ url_for('static', filename='js/script.js') }}"
 
         const classSegment = {{ class_segment | safe }};
-        const R = {{ RSeg | safe }};
-        let F = {{ FSeg | safe }};
 
         const rfm_score = {{ score_key | safe }};
         const rfmScoreVal = {{ score_val | safe }};
@@ -79,13 +77,19 @@
                     </tbody>
                 </table>
             </div>
-            <div class="card" style="background : #333333">
-                <div class="card-body">
-                    <div class="card-dark">
-                        <canvas id="RFMScore"></canvas>
-                    </div>
-                    <div class="card-dark">
-                        <canvas id="RFMClass"></canvas>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card" style="background : #333333">
+                        <div class="card-body">
+                            <div class="card-dark">
+                                <canvas id="RFMScore"></canvas>
+                            </div>
+                </div>
+                <div class="col-sm">
+                            <div class="card-dark">
+                                <canvas id="RFMClass"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

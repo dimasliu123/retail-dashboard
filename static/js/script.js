@@ -247,9 +247,11 @@ export const countryConfig = (data) => {
             },
             scales : {
                 y : {
+                    type : "linear",
                     beginAtZero : false,
                     ticks : {
                         color : "#F5F5F5",
+                        type : "linear",
                     },
                 },
                 x : {

@@ -36,6 +36,9 @@
                             <option value="2011-12" selected="selected">2011-12</option>
                         </datalist>
                     </select>
+                    <div class="top-right">
+                        <button class="btn btn-dark btn-outline-info btn-rounded text-center" id="change-scale">Logarithmic</button>
+                    </div>
                 </div>
                 <canvas id="country-monthly"></canvas>
             </div>
@@ -79,6 +82,21 @@
             countryChart.update()
         })
 
+        const changeScale = document.querySelector("#change-scale");
+        changeScale.addEventListener("click", () => {
+            if (changeScale.innerHTML == "Normal") {
+                countryChart.options.scales.y.type = "logarithmic"
+                countryChart.options.scales.y.ticks.type = "logarithmic"
+                countryChart.update()
+                changeScale.innerHTML = "Logarithmic"
+            }
+            else if (changeScale.innerHTML == "Logarithmic") {
+                countryChart.options.scales.y.type = "linear"
+                countryChart.options.scales.y.ticks.type = "linear"
+                countryChart.update()
+                changeScale.innerHTML = "Normal"
+            }
+        })
     </script>
 </body>
 </html>
