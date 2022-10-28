@@ -17,5 +17,11 @@
 <li><strong>Country</strong> : Displaying the customer based on it's country</li>
 <li><strong>Combo</strong> : Displaying the most bought product pairs based on Invoice/Customer.</li>
 </ul>
-<h2>TODO :</h2>
-<p>Adding a association rule learning model on Market Basket Analysis page</p> 
+<h2>Preview Page :</h2>
+<h3>Sales Page</h3>
+<img src="./readme-img/sales-page.png" alt="Sales Page" width="630" height="415">
+<h3>Country Sales</h3>
+<img src="./readme-img/country-sales-page.png" alt="Country Sales Page" width="630" height="415">
+<h3>Customer Segmentation Page</h3>
+<img src="./readme-img/cust-seg-page.png" alt="Customer Segmentation Page" width="630" height="415">
+<img src="./readme-img/cust-seg-page-2.png" alt="Customer Segmentation Page" width="630" height="415">
