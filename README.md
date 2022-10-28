@@ -19,9 +19,9 @@
 </ul>
 <h2>Preview Page :</h2>
 <h3>Sales Page</h3>
-<img src="./readme-img/sales-page.png" alt="Sales Page" width="630" height="415">
+<img src="./readme-img/sales-page.png" alt="Sales Page" width="896" height="457">
 <h3>Country Sales</h3>
-<img src="./readme-img/country-sales-page.png" alt="Country Sales Page" width="630" height="415">
+<img src="./readme-img/country-sales-page.png" alt="Country Sales Page" width="691" height="455">
 <h3>Customer Segmentation Page</h3>
-<img src="./readme-img/cust-seg-page.png" alt="Customer Segmentation Page" width="630" height="415">
-<img src="./readme-img/cust-seg-page-2.png" alt="Customer Segmentation Page" width="630" height="415">
+<img src="./readme-img/cust-seg-page.png" alt="Customer Segmentation Page" width="822" height="418">
+<img src="./readme-img/cust-seg-page-2.png" alt="Customer Segmentation Page" width="620" height="303">
